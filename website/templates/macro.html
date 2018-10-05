@@ -1,0 +1,5 @@
+{% macro scoreboard(counter=0) %}
+	<a href="{{ url_for('scoreboard', counter=1) }}" class="{% if counter|int == 1 %}active{% endif %} item" onclick="document.getElementById('loading').style = ''">第一次段考</a>
+    <a href="{{ url_for('scoreboard', counter=2) }}" class="{% if counter|int == 2 %}active{% endif %} item" onclick="document.getElementById('loading').style = ''">第二次段考</a>
+    <a href="{{ url_for('scoreboard', counter=3) }}" class="{% if counter|int == 3 %}active{% endif %} item" onclick="document.getElementById('loading').style = ''">第三次段考</a>
+{%- endmacro %}

@@ -1,0 +1,105 @@
+{% import "macro.html" as func %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> {% block header %}{% endblock %} </title>
+    <meta name="viewport" content="width=device-width" />
+    <!-- Using TocasUI-2.4-alpha -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='tocas/tocas.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='tocas/tocas.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/check.js') }}"></script>
+</head>
+<body>
+    <div id="loading" class="ts active dimmer" style="display: none;">
+        <div class="ts loader"></div>
+    </div>
+    <div class="ts huge left sidebar inverted overlapped vertical menu">
+        <div class="ts attached inverted menu">
+            <a onclick="ts('.left.inverted.sidebar').sidebar('hide');" class="item">
+                <i class="chevron left icon"></i>
+            </a>
+            {% if session['user'] %}
+            <a class="item">
+                <p>嗨，{{ stdid }}</p>
+            </a>
+                <div class="right menu">
+                    <a class="item" href="{{ url_for('logout') }}">登出</a>
+                </div>
+            {% endif %}
+        </div>
+        <a href="{{ url_for('index') }}" class="{% block active_mobile_home %}{% endblock %} item">首頁</a>
+        {% if session['user'] %}
+            <div class="item">
+                成績表
+                <div class="menu">
+                    {% if count %}
+                        {{ func.scoreboard(count) }}
+                    {% else %}
+                        {{ func.scoreboard() }}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        <a href="https://github.com/racterub/tyshscore-web" class="item">GitHub</a>
+    </div>
+    <div class="pusher">
+        <div class="large device only">
+            <div class="ts menu">
+                <a href="{{ url_for('index') }}" class="{% block active_large_home %}{% endblock %} item">首頁</a>
+                {% if session['user']  %}
+                    <div class="ts item dropdown" onclick="ts('.ts.dropdown:not(.basic)').dropdown();">
+                        <div class="text">
+                            成績表
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            {% if count %}
+                                {{ func.scoreboard(count) }}
+                            {% else %}
+                                {{ func.scoreboard() }}
+                            {% endif %}
+                        </div>
+
+                    </div>
+                {% else %}
+                {% endif %}
+                    <div class="right menu">
+                    {% if session['user'] %}
+                        <div class="ts item dropdown" onclick="ts('.ts.dropdown:not(.basic)').dropdown();">
+                            <div class="text">
+                                嗨, {{ stdid }} !
+                            </div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="item" href="{{ url_for('logout') }}">登出</a>
+                            </div>
+                        </div>
+                    {% else %}
+                    {% endif %}
+                    <a href="https://github.com/racterub/tyshscore-web" class="item">GitHub</a>
+                    </div>
+            </div>
+        </div>
+        <div class="mobile or tablet only">
+            <div class="ts menu">
+                <a onclick="ts('.left.inverted.sidebar').sidebar({
+                    dimPage: true,
+                    scrollLock: true
+                    }).sidebar('toggle');" class="item">
+                    <i class="list layout icon"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ts very narrow container">
+            {% if session['user'] %}
+                {% block authed %}
+                {% endblock %}
+            {% else %}
+                {% block body %}
+                {% endblock %}
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

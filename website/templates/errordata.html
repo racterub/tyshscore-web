@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block header %}TYSH | Data Not Reachable{% endblock %}
+{% block authed %}
+	<br>
+	<br>
+	<div class="ts center aligned raised negative very padded segment">
+		<div class="ts icon header">
+			<i class="caution sign"></i>
+			資料無法處理
+				<div>
+					您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試
+				</div>
+		</div>
+	</div>
+{% endblock %}

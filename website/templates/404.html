@@ -1,0 +1,48 @@
+{% import "macro.html" as func %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> TYSH | 404 Not Found </title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.js"></script>
+</head>
+<body>
+    <div class="ts menu">
+    <a href="{{ url_for('index') }}" class="item">首頁</a>
+    {% if session['user']  %}
+        <div class="ts item dropdown" onclick="ts('.ts.dropdown:not(.basic)').dropdown();">
+            <div class="text">
+                成績表
+            </div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                {{ func.scoreboard() }}
+            </div>
+
+        </div>
+    {% else %}
+    {% endif %}
+        <div class="right menu">
+        {% if session['user'] %}
+        <a href="{{ url_for('logout') }}" class="item">登出</a>
+        {% else %}
+        {% endif %}
+        <a href="https://github.com/racterub/tyshscore-web" class="item">GitHub</a>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="ts very narrow container">
+        <div class="ts raised negative center aligned very padded segment">
+            <h1 class="ts header">404 Not Found</h1>
+        </div>
+        <div class="ts fluid bottom attached buttons">
+            <button class="ts info button" onclick="history.go(-1)"> 返回上一頁 </button>
+        </div>
+    </div>
+</body>
+</html>
