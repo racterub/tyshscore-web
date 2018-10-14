@@ -1,15 +1,17 @@
-TYSHscore
+TYSHscore Web
 ===
 
-## A Flask based score system.
-For this build, only semestral exam is avalible.
+## `Warning. When deploy on Heroku, a strange issue occurs which will randomly drop session.`
+
+
+## A Flask based system.
+For this build, only semestral exam is avaliable.
 
 Screenshot:
 ![screenshot](https://i.imgur.com/VjoMHLv.png)
 
 ### Some thing needs to note here:
 
-1. Login process `DOES NOT` processed in here.
-2. I `DO NOT` use any databases module.
-3. I `DO NOT` store any credentials
+1. I `DO NOT` use any databases module.
+2. I `DO NOT` store any credentials
 
