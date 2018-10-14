@@ -1,7 +1,7 @@
 TYSHscore Web
 ===
 
-## `Warning. When deploy on Heroku, a strange issue occurs which will randomly drop session.`
+`Warning. When deploy on Heroku, a strange issue occurs which will randomly drop session. Please check issue #2.`
 
 
 ## A Flask based system.
