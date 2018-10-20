@@ -31,7 +31,7 @@ def getdata():
         return False
     else:
         result = []
-        root = etree.HTML(res)
+        root = etree.HTML(res.text)
         table = root.xpath('//table')
         for i in table:
             tr = i.xpath('.//tr')
