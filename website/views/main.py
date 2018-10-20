@@ -57,7 +57,7 @@ def scoreboard(counter):
             for i in content:
                 body.append(i[counter-1])
             #Hardcoded table header :(
-            return render_template('scoreboard.html', head=['科目', '成績', '全班平均', '班級排名', '班級人數'], body=body, stdid=uid, count=counter1)
+            return render_template('scoreboard.html', head=['科目', '成績', '全班平均', '班級排名', '班級人數'], body=body, stdid=uid, count=counter)
     else:
         session['redirect'] = '請先登入系統'
         return redirect(url_for('index'))
