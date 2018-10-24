@@ -69,3 +69,7 @@ def logout():
     session.pop('user', None)
     session['logout'] = '已登出系統'
     return redirect(url_for('index'))
+
+@app.route('/testissue/')
+def testissue():
+    return "From dev branch"
