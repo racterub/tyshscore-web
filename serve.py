@@ -8,10 +8,8 @@
 from website import app
 import os
 
-TEST = False
-
 if __name__ == '__main__':
-    if TEST:
+    if app.config['DEBUG']:
         port = 6969
     else:
         port = int(os.environ.get("PORT", 5000))
