@@ -17,17 +17,20 @@ uid = ''
 def index():
     global uid, content
     if request.method == "POST":
-        stdid = request.form['stdid']
-        stdpwd = request.form['stdpwd']
-        status = login(stdid, stdpwd)
-        if status == True:
-            uid = request.form['stdid']
-            session['user'] = request.form['stdid']
-            flash('登入成功')
-            return render_template('index.html', stdid=uid)
+        if request.form:
+            stdid = request.form['stdid']
+            stdpwd = request.form['stdpwd']
+            status = login(stdid, stdpwd)
+            if status == True:
+                uid = request.form['stdid']
+                session['user'] = request.form['stdid']
+                flash('登入成功')
+                return render_template('index.html', stdid=uid)
+            else:
+                info = '帳號密碼錯誤，請再次確認'
+                return render_template('index.html', info=info)
         else:
-            info = '帳號密碼錯誤，請再次確認'
-            return render_template('index.html', info=info)
+            return "no data" #Create a 400 error template
     else:
         if 'redirect' in session:
             info = session['redirect']
@@ -69,3 +72,19 @@ def logout():
     session.pop('user', None)
     session['logout'] = '已登出系統'
     return redirect(url_for('index'))
+
+@app.route('/api/v1/login', methods=['POST'])
+def api_login():
+    if request.json:
+        stdid = request.json['user']
+        stdpwd = request.json['pass']
+        if (stdid != None and stdpwd != None):
+            if login(stdid, stdpwd):
+                return "logged in w/ User: %s Pass: %s" % (stdid, stdpwd)
+            else:
+                return "error"
+        else:
+            return "JSON"
+    else:
+        return "no data"
+
