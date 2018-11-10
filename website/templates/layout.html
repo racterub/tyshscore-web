@@ -1,4 +1,4 @@
-{% import "macro.html" as func %}
+{% import "macro.html" as score %}
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -34,9 +34,9 @@
                 成績表
                 <div class="menu">
                     {% if count %}
-                        {{ func.scoreboard(count) }}
+                        {{ score.scoreboard(count) }}
                     {% else %}
-                        {{ func.scoreboard() }}
+                        {{ score.scoreboard() }}
                     {% endif %}
                 </div>
             </div>
