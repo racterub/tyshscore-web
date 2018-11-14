@@ -3,10 +3,12 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title> TYSH | 404 Not Found </title>
+    <title> {% block header %}{% endblock %} </title>
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.js"></script>
+    <!-- Using TocasUI-2.4-alpha -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tocas.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='css/tocas.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/check.js') }}"></script>
 </head>
 <body>
     <div class="ts menu">
