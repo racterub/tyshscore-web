@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block header %}TYSH | {{ error }}{% endblock %}
+{% block authed %}
+	<br>
+	<br>
+	<div class="ts center aligned raised negative very padded segment">
+		<h3 class="ts center aligned icon header">
+		    <i class="caution sign icon"></i>{{ error_header }}
+	    	<div class="sub header">{{ error_context }}<div>
+		</h3>
+	</div>
+{% endblock %}

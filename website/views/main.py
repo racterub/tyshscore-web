@@ -15,7 +15,7 @@ uid = ''
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    global uid, content
+    global uid
     if request.method == "POST":
         if request.form:
             stdid = request.form['stdid']
@@ -30,7 +30,9 @@ def index():
                 info = '帳號密碼錯誤，請再次確認'
                 return render_template('index.html', info=info)
         else:
-            return "no data" #Create a 400 error template
+            error_header = "資料無法處理"
+            error_context = "您並無提供任何登入資料，請重新登入。"
+            return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context)
     else:
         if 'redirect' in session:
             info = session['redirect']
@@ -47,11 +49,13 @@ def index():
 def scoreboard(counter):
     global uid
     if 'user' in session:
+        if (counter <= 0 | counter > 3): #Also Harcoded..
+            error_header = '資料無法處理'
+            error_context = '您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試'
+            return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context), 400
         content = getdata()
         if content == False:
-            return render_template('errordata.html', stdid=uid)
-        if (counter <= 0 or counter > 3): #Also Harcoded..
-            return render_template('errordata.html')
+            return render_template('error.html', stdid=uid)
         body = []
         for i in content:
             body.append(i[counter-1])
