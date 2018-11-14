@@ -8,6 +8,8 @@
 import datetime
 import os
 
+#For development
+#DEBUG = True 
 DEBUG = False
 
 SECRET_KEY = os.urandom(24)

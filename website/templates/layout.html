@@ -1,4 +1,4 @@
-{% import "macro.html" as func %}
+{% import "macro.html" as score %}
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -6,8 +6,8 @@
     <title> {% block header %}{% endblock %} </title>
     <meta name="viewport" content="width=device-width" />
     <!-- Using TocasUI-2.4-alpha -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='tocas/tocas.css') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='tocas/tocas.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tocas.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='css/tocas.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/check.js') }}"></script>
 </head>
 <body>
@@ -34,9 +34,9 @@
                 成績表
                 <div class="menu">
                     {% if count %}
-                        {{ func.scoreboard(count) }}
+                        {{ score.scoreboard(count) }}
                     {% else %}
-                        {{ func.scoreboard() }}
+                        {{ score.scoreboard() }}
                     {% endif %}
                 </div>
             </div>
@@ -55,9 +55,9 @@
                         <i class="dropdown icon"></i>
                         <div class="menu">
                             {% if count %}
-                                {{ func.scoreboard(count) }}
+                                {{ score.scoreboard(count) }}
                             {% else %}
-                                {{ func.scoreboard() }}
+                                {{ score.scoreboard() }}
                             {% endif %}
                         </div>
 

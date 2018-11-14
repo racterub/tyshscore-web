@@ -15,19 +15,24 @@ uid = ''
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    global uid, content
+    global uid
     if request.method == "POST":
-        stdid = request.form['stdid']
-        stdpwd = request.form['stdpwd']
-        status = login(stdid, stdpwd)
-        if status == True:
-            uid = request.form['stdid']
-            session['user'] = request.form['stdid']
-            flash('登入成功')
-            return render_template('index.html', stdid=uid)
+        if request.form:
+            stdid = request.form['stdid']
+            stdpwd = request.form['stdpwd']
+            status = login(stdid, stdpwd)
+            if status == True:
+                uid = request.form['stdid']
+                session['user'] = request.form['stdid']
+                flash('登入成功')
+                return render_template('index.html', stdid=uid)
+            else:
+                info = '帳號密碼錯誤，請再次確認'
+                return render_template('index.html', info=info)
         else:
-            info = '帳號密碼錯誤，請再次確認'
-            return render_template('index.html', info=info)
+            error_header = "資料無法處理"
+            error_context = "您並無提供任何登入資料，請重新登入。"
+            return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context)
     else:
         if 'redirect' in session:
             info = session['redirect']
@@ -44,20 +49,19 @@ def index():
 def scoreboard(counter):
     global uid
     if 'user' in session:
-        data = getdata()
-        if data == False:
-            return render_template('errordata.html', stdid=uid)
-        else:
-            content = getdata()
-            if (counter >= 0 & counter < 3):
-                pass
-            else:
-                return render_template('errordata.html')
-            body = []
-            for i in content:
-                body.append(i[counter-1])
-            #Hardcoded table header :(
-            return render_template('scoreboard.html', head=['科目', '成績', '全班平均', '班級排名', '班級人數'], body=body, stdid=uid, count=counter)
+        if (counter <= 0 | counter > 3): #Also Harcoded..
+            error_header = '資料無法處理'
+            error_context = '您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試'
+            return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context), 400
+        content = getdata()
+        if content == False:
+            return render_template('error.html', stdid=uid)
+        body = []
+        for i in content:
+            body.append(i[counter-1])
+        #Hardcoded table header :(
+        return render_template('scoreboard.html', head=['科目', '成績', '全班平均', '班級排名', '班級人數'], body=body, stdid=uid, count=counter)
+
     else:
         session['redirect'] = '請先登入系統'
         return redirect(url_for('index'))
@@ -69,3 +73,19 @@ def logout():
     session.pop('user', None)
     session['logout'] = '已登出系統'
     return redirect(url_for('index'))
+
+@app.route('/api/v1/login', methods=['POST'])
+def api_login():
+    if request.json:
+        stdid = request.json['user']
+        stdpwd = request.json['pass']
+        if (stdid != None and stdpwd != None):
+            if login(stdid, stdpwd):
+                return "logged in w/ User: %s Pass: %s" % (stdid, stdpwd)
+            else:
+                return "error"
+        else:
+            return "JSON"
+    else:
+        return "no data"
+
