@@ -32,7 +32,7 @@ def index():
         else:
             error_header = "資料無法處理"
             error_context = "您並無提供任何登入資料，請重新登入。"
-            return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context)
+            return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context),400
     else:
         if 'redirect' in session:
             info = session['redirect']
@@ -73,19 +73,4 @@ def logout():
     session.pop('user', None)
     session['logout'] = '已登出系統'
     return redirect(url_for('index'))
-
-@app.route('/api/v1/login', methods=['POST'])
-def api_login():
-    if request.json:
-        stdid = request.json['user']
-        stdpwd = request.json['pass']
-        if (stdid != None and stdpwd != None):
-            if login(stdid, stdpwd):
-                return "logged in w/ User: %s Pass: %s" % (stdid, stdpwd)
-            else:
-                return "error"
-        else:
-            return "JSON"
-    else:
-        return "no data"
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2018-09-11 23:58:02
 # @Author  : Racter (vivi.450@hotmail.com)
-# @Link    : https://rvacterub.me
+# @Link    : https://racterub.me
 
 
 from lxml import etree
