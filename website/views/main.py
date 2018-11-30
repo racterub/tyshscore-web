@@ -10,7 +10,7 @@ from lxml import etree
 import requests
 from website.views.lib.crawler import login, getdata
 
-uid = ''
+uid = u''
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -24,14 +24,14 @@ def index():
             if status == True:
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
-                flash('登入成功')
+                flash(u"登入成功")
                 return render_template('index.html', stdid=uid)
             else:
-                info = '帳號密碼錯誤，請再次確認'
+                info = u"帳號密碼錯誤，請再次確認"
                 return render_template('index.html', info=info)
         else:
-            error_header = "資料無法處理"
-            error_context = "您並無提供任何登入資料，請重新登入。"
+            error_header = u"資料無法處理"
+            error_context = u"您的登入資料無法處理，請重新登入"
             return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context),400
     else:
         if 'redirect' in session:
@@ -50,8 +50,8 @@ def scoreboard(counter):
     global uid
     if 'user' in session:
         if (counter <= 0 | counter > 3): #Also Harcoded..
-            error_header = '資料無法處理'
-            error_context = '您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試'
+            error_header = u"資料無法處理"
+            error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
             return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context), 400
         content = getdata()
         if content == False:
@@ -60,10 +60,10 @@ def scoreboard(counter):
         for i in content:
             body.append(i[counter-1])
         #Hardcoded table header :(
-        return render_template('scoreboard.html', head=['科目', '成績', '全班平均', '班級排名', '班級人數'], body=body, stdid=uid, count=counter)
+        return render_template('scoreboard.html', head=[u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數'], body=body, stdid=uid, count=counter)
 
     else:
-        session['redirect'] = '請先登入系統'
+        session['redirect'] = u'請先登入系統'
         return redirect(url_for('index'))
 
 @app.route('/logout/')
@@ -71,6 +71,6 @@ def logout():
     global uid
     uid = ''
     session.pop('user', None)
-    session['logout'] = '已登出系統'
+    session['logout'] = u'已登出系統'
     return redirect(url_for('index'))
 
