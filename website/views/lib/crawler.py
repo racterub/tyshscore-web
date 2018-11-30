@@ -27,7 +27,7 @@ def getdata():
     main.get(url + 'f_left.asp')
     res = main.post(url + 'fnc.asp', data=scoredata)
     res.encoding = 'big5'
-    if "alert('本學期沒開課或學生身上沒有開課!!');" in res.text:
+    if u"alert('本學期沒開課或學生身上沒有開課!!');" in res.text:
         return False
     else:
         result = []
