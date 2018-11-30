@@ -59,7 +59,7 @@ def getdata():
         formatter = []
         tmp = []
         bodycontent = []
-        for i in range(29, result.index('總分') - 1, 24):
+        for i in range(29, result.index(u'總分') - 1, 24):
             recv = result[i:i+24]
             subject = recv[0][2:].strip()
             score = recv[4:]
