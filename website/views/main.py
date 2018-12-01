@@ -4,7 +4,7 @@
 # @Author  : Racter (vivi.450@hotmail.com)
 # @Link    : https://racterub.me
 
-from flask import request, flash, session, render_template, redirect, url_for, make_response
+from flask import request, flash, session, render_template, redirect, url_for, make_response, send_from_directory
 from website import app
 from lxml import etree
 import requests
@@ -74,3 +74,6 @@ def logout():
     session['logout'] = u'已登出系統'
     return redirect(url_for('index'))
 
+@app.route('/robots.txt')
+def robotstxt():
+    return send_from_directory('static', 'robots.txt')
