@@ -1,0 +1,83 @@
+*** Starting uWSGI 2.0.17.1 (64bit) on [Fri Nov 30 16:12:10 2018] ***
+compiled with version: 5.4.0 20160609 on 29 November 2018 17:29:56
+os: Linux-4.4.0-139-generic #165-Ubuntu SMP Wed Oct 24 10:58:50 UTC 2018
+nodename: ubuntu-xenial
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 2
+current working directory: /home/vagrant/tyshscore-web
+detected binary path: /home/vagrant/.venv/tysh/bin/uwsgi
+your processes number limit is 11959
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address tysh.sock fd 3
+Python version: 2.7.12 (default, Nov 12 2018, 14:36:49)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x182e1e0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 291680 bytes (284 KB) for 3 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x182e1e0 pid: 19479 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 19479)
+spawned uWSGI worker 1 (pid: 19481, cores: 1)
+spawned uWSGI worker 2 (pid: 19482, cores: 1)
+spawned uWSGI worker 3 (pid: 19483, cores: 1)
+Python auto-reloader enabled
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket tysh.sock removed.
+*** Starting uWSGI 2.0.17.1 (64bit) on [Fri Nov 30 16:16:38 2018] ***
+compiled with version: 5.4.0 20160609 on 29 November 2018 17:29:56
+os: Linux-4.4.0-139-generic #165-Ubuntu SMP Wed Oct 24 10:58:50 UTC 2018
+nodename: ubuntu-xenial
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 2
+current working directory: /home/vagrant/tyshscore-web
+detected binary path: /home/vagrant/.venv/tysh/bin/uwsgi
+your processes number limit is 11959
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address tysh.sock fd 3
+Python version: 2.7.12 (default, Nov 12 2018, 14:36:49)  [GCC 5.4.0 20160609]
+Python main interpreter initialized at 0x1a08410
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 291680 bytes (284 KB) for 3 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x1a08410 pid: 19603 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 19603)
+spawned uWSGI worker 1 (pid: 19614, cores: 1)
+spawned uWSGI worker 2 (pid: 19615, cores: 1)
+spawned uWSGI worker 3 (pid: 19616, cores: 1)
+Python auto-reloader enabled
+[pid: 19614|app: 0|req: 1/1] 10.0.2.2 () {40 vars in 679 bytes} [Fri Nov 30 16:24:11 2018] GET /robots.txt => generated 1057 bytes in 90 msecs (HTTP/1.1 404) 2 headers in 88 bytes (1 switches on core 0)
+[pid: 19616|app: 0|req: 1/2] 10.0.2.2 () {42 vars in 776 bytes} [Fri Nov 30 16:24:11 2018] GET / => generated 2818 bytes in 165 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 19614|app: 0|req: 2/3] 10.0.2.2 () {42 vars in 750 bytes} [Fri Nov 30 16:24:11 2018] GET /static/css/tocas.css => generated 487207 bytes in 35 msecs via sendfile() (HTTP/1.1 200) 8 headers in 306 bytes (1 switches on core 0)
+[pid: 19616|app: 0|req: 2/4] 10.0.2.2 () {42 vars in 731 bytes} [Fri Nov 30 16:24:11 2018] GET /static/js/check.js => generated 240 bytes in 30 msecs via sendfile() (HTTP/1.1 200) 8 headers in 298 bytes (0 switches on core 0)
+[pid: 19615|app: 0|req: 1/5] 10.0.2.2 () {42 vars in 733 bytes} [Fri Nov 30 16:24:11 2018] GET /static/css/tocas.js => generated 29135 bytes in 42 msecs via sendfile() (HTTP/1.1 200) 8 headers in 303 bytes (0 switches on core 0)
+[pid: 19616|app: 0|req: 3/6] 10.0.2.2 () {44 vars in 805 bytes} [Fri Nov 30 16:24:12 2018] GET /static/css/fonts/icons.woff2 => generated 77160 bytes in 3 msecs via sendfile() (HTTP/1.1 200) 8 headers in 304 bytes (0 switches on core 0)
+[pid: 19614|app: 0|req: 3/7] 10.0.2.2 () {52 vars in 992 bytes} [Fri Nov 30 16:24:18 2018] POST / => generated 5024 bytes in 318 msecs (HTTP/1.1 200) 4 headers in 193 bytes (1 switches on core 0)
+[pid: 19614|app: 0|req: 4/8] 10.0.2.2 () {44 vars in 836 bytes} [Fri Nov 30 16:24:22 2018] GET /scoreboard/2 => generated 16898 bytes in 3419 msecs (HTTP/1.1 200) 3 headers in 96 bytes (1 switches on core 0)
+[pid: 19614|app: 0|req: 5/9] 10.0.2.2 () {44 vars in 824 bytes} [Fri Nov 30 16:31:49 2018] GET / => generated 2818 bytes in 5 msecs (HTTP/1.1 200) 2 headers in 81 bytes (1 switches on core 0)
+[pid: 19616|app: 0|req: 4/10] 10.0.2.2 () {40 vars in 679 bytes} [Fri Nov 30 16:31:49 2018] GET /robots.txt => generated 1057 bytes in 31 msecs (HTTP/1.1 404) 2 headers in 88 bytes (1 switches on core 0)
+[pid: 19615|app: 0|req: 2/11] 10.0.2.2 () {44 vars in 812 bytes} [Fri Nov 30 16:31:51 2018] GET / => generated 2818 bytes in 80 msecs (HTTP/1.1 200) 2 headers in 81 bytes (2 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket tysh.sock removed.
