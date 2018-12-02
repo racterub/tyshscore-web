@@ -16,6 +16,7 @@ content = []
 @app.route('/', methods=['POST', 'GET'])
 def index():
     global uid
+    global content
     if request.method == "POST":
         if request.form:
             stdid = request.form['stdid']
@@ -24,6 +25,7 @@ def index():
             if status == True:
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
+                content = getdata()
                 flash(u"登入成功")
                 return render_template('index.html', stdid=uid)
             else:
