@@ -11,7 +11,7 @@ import requests
 from website.views.lib.crawler import login, getdata
 
 uid = u''
-
+content = []
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -48,12 +48,16 @@ def index():
 @app.route('/scoreboard/<int:counter>')
 def scoreboard(counter):
     global uid
+    global content
     if 'user' in session:
         if (counter <= 0 | counter > 3): #Also Harcoded..
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
             return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context), 400
-        content = getdata()
+        if content:
+            pass
+        else:
+            content = getdata()
         if content == False:
             return render_template('error.html', stdid=uid)
         body = []
