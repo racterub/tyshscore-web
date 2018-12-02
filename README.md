@@ -1,9 +1,10 @@
 TYSHscore Web
 ===
-
-`Warning. When deploy on Heroku, a strange issue occurs which will randomly drop session.`
-For further information, Please check issue #2.
-
+```
+This project is no longer deploying on Heroku.
+Instead, I've manually deployed in my server
+```
+Here's the link: [tyshscore-web](https://tysh.racterub.me/)
 
 ## A Flask based system.
 For this build, only semestral exam is avaliable.
