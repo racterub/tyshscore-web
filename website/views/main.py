@@ -8,7 +8,7 @@ from flask import request, flash, session, render_template, redirect, url_for, m
 from website import app
 from lxml import etree
 import requests
-from website.views.lib.crawler import login, getdata
+from website.views.lib.crawler import login, get_score
 
 uid = u''
 content = []
@@ -25,7 +25,7 @@ def index():
             if status == True:
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
-                content = getdata()
+                content = get_score()
                 flash(u"登入成功")
                 return render_template('index.html', stdid=uid)
             else:
@@ -59,7 +59,7 @@ def scoreboard(counter):
         if content:
             pass
         else:
-            content = getdata()
+            content = get_score()
         if content == False:
             return render_template('error.html', stdid=uid)
         body = []
