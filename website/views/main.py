@@ -4,18 +4,19 @@
 # @Author  : Racter (vivi.450@hotmail.com)
 # @Link    : https://racterub.me
 
-from flask import request, flash, session, render_template, redirect, url_for, make_response
+from flask import request, flash, session, render_template, redirect, url_for, make_response, send_from_directory
 from website import app
 from lxml import etree
 import requests
-from website.views.lib.crawler import login, getdata
+from website.views.lib.crawler import login, get_score
 
 uid = u''
-
+content = []
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     global uid
+    global content
     if request.method == "POST":
         if request.form:
             stdid = request.form['stdid']
@@ -24,6 +25,7 @@ def index():
             if status == True:
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
+                content = get_score()
                 flash(u"登入成功")
                 return render_template('index.html', stdid=uid)
             else:
@@ -48,12 +50,16 @@ def index():
 @app.route('/scoreboard/<int:counter>')
 def scoreboard(counter):
     global uid
+    global content
     if 'user' in session:
         if (counter <= 0 | counter > 3): #Also Harcoded..
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
             return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context), 400
-        content = getdata()
+        if content:
+            pass
+        else:
+            content = get_score()
         if content == False:
             return render_template('error.html', stdid=uid)
         body = []
@@ -74,3 +80,6 @@ def logout():
     session['logout'] = u'已登出系統'
     return redirect(url_for('index'))
 
+@app.route('/robots.txt')
+def robotstxt():
+    return send_from_directory('static', 'robots.txt')

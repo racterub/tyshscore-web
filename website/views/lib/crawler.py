@@ -20,9 +20,7 @@ def login(stdid, stdpwd):
     else:
         return False
 
-#WORST PARSER EVERRRRRRRRRRRRR
-#Comment out the unused part of the parser to gain resource resource
-def getdata():
+def get_score():
     scoredata = {'fncid': '010090', 'std_id': '', 'local_ip': '', 'contant': ''}
     main.get(url + 'f_left.asp')
     res = main.post(url + 'fnc.asp', data=scoredata)
@@ -45,20 +43,9 @@ def getdata():
                             result.append('')
                         else:
                             result.append(text[0].strip())
-        # info = result[0:5]
-        # head = result[5:29]
-        # top_row = []
-        # head = head[4:]
-        # for i in head:
-        #     if i == '本次':
-        #         head[head.index(i)] = '本次班平均'
-        # for i in range(0, len(head), 4):
-        #     top_row.append(head[i+1:i+4])
-
-
         formatter = []
         tmp = []
-        bodycontent = []
+        score_table = []
         for i in range(29, result.index(u'總分') - 1, 24):
             recv = result[i:i+24]
             subject = recv[0][2:].strip()
@@ -72,23 +59,6 @@ def getdata():
                         tmp[tmp.index(p)] = float(p)
                 formatter.append(tmp)
                 tmp = []
-            bodycontent.append(formatter)
+            score_table.append(formatter)
             formatter = []
-
-
-        # footerupper = []
-        # for i in range(461, 483, 6):
-        #     footerupper.append(result[i:i+6])
-        # footerlower = []
-        # for i in range(485, 508, 11):
-        #     footerlower.append(result[i:i+11])
-        #     for i in footerlower:
-        #         for k in i:
-        #             if '(' in k and '名次' not in k:
-        #                 i.remove(k)
-
-        # bottom = []
-        # for i in range(518, 524, 2):
-        #     bottom.append(result[i:i+2])
-        # return info, head, bodycontent, footerupper, footerlower, bottom
-        return bodycontent
+        return score_table
