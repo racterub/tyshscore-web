@@ -13,13 +13,12 @@ from website.views.lib.crawler import login, get_score
 #Initial globs
 uid = u''
 parent_mode=False
-content = []
+#exam_score
+#below_subject
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    global uid
-    global content
-    global parent_mode
+    global uid, exam_score, below_subject, parent_mode
     if request.method == "POST":
         if request.form:
             stdid = request.form['stdid']
@@ -29,11 +28,13 @@ def index():
                 if stdid[-1] == "p":
                     stdid = stdid[:-1]
                     parent_mode = True
+                    flash(u"將使用家長模式登入")
+                else:
+                    parent_mode = False
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
-                content = get_score()
+                exam_score, below_subject = get_score()
                 flash(u"登入成功")
-                flash(u"將使用家長模式登入")
                 return render_template('index.html', stdid=uid, parent_mode=parent_mode)
             else:
                 info = u"帳號密碼錯誤，請再次確認"
@@ -56,25 +57,34 @@ def index():
 
 @app.route('/scoreboard/<int:counter>')
 def scoreboard(counter):
-    global uid
-    global content
-    global parent_mode
+    global uid, exam_score, below_subject, parent_mode
     if 'user' in session:
-        if (counter <= 0 | counter > 3): #Also Harcoded..
+        if (counter <= 0 | counter > 5): #Also Harcoded..
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
             return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context, parent_mode=parent_mode), 400
-        if content:
+        if exam_score:
             pass
         else:
-            content = get_score()
-        if content == False:
+            exam_score, below_subject = get_score()
+        if exam_score == False:
+            error_header = u"資料無法處理"
+            error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
             return render_template('error.html', stdid=uid, parent_mode=parent_mode)
         body = []
-        for i in content:
-            body.append(i[counter-1])
+        if counter == 4:
+            head = [u'科目', u'成績']
+            for i in exam_score:
+                body.append(i[counter-1])
+        elif counter == 5:
+            head = [u'科目', u'學期成績', u'最後成績', u'第1次補考成績']
+            body = below_subject
+        else:
+            for i in exam_score:
+                body.append(i[counter-1])
+            head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
         #Hardcoded table header :(
-        return render_template('scoreboard.html', head=[u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數'], body=body, stdid=uid, count=counter, parent_mode=parent_mode)
+        return render_template('scoreboard.html', head=head, body=body, stdid=uid, count=counter, parent_mode=parent_mode)
 
     else:
         session['redirect'] = u'請先登入系統'
@@ -91,3 +101,23 @@ def logout():
 @app.route('/robots.txt')
 def robotstxt():
     return send_from_directory('static', 'robots.txt')
+
+@app.route('/beta/<int:counter>')
+def beta(counter):
+    global uid
+    global content
+    uid = '510427'
+    login(uid, 'james50428')
+    session['user'] = uid
+    if content:
+        pass
+    else:
+        content = beta_bs4_score()
+    body = []
+    for i in content:
+        body.append(i[counter-1])
+    if counter == 4:
+        head = [u'科目', u'成績']
+    else:
+        head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
+    return render_template('scoreboard.html', head=head, body=body, stdid=uid, count=counter)
