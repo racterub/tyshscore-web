@@ -6,10 +6,15 @@
 
 
 from lxml import etree
+from bs4 import BeautifulSoup as BS
 import requests
 
 main = requests.Session()
 url = 'http://skyweb.tysh.tyc.edu.tw/skyweb/'
+
+#score defs
+total_col = 16
+per_col = 4
 
 def login(stdid, stdpwd):
     loginData = {'txtid': stdid, 'txtpwd': stdpwd, 'check': 'confirm'}
@@ -62,3 +67,86 @@ def get_score():
             score_table.append(formatter)
             formatter = []
         return score_table
+
+
+def chunk(l, size):
+    for i in range(0, len(l), size):
+        yield l[i:i+size]
+def beta_bs4_score():
+    '''
+    THIS BETA IS A 2.x VERSION OF TYSHSCORE.
+
+    I'm trying to replace lxml with bs4
+    Reason is mentioned inside beta_get_score function
+
+    THIS IS WORKING!!!!!!!!!!!!!
+    '''
+    scoredata = {'fncid': '010090', 'std_id': '', 'local_ip': '', 'contant': ''}
+    main.get(url + 'f_left.asp')
+    res = main.post(url + 'fnc.asp', data=scoredata)
+    res.encoding = 'big5'
+    if u"alert('本學期沒開課或學生身上沒有開課!!');" in res.text:
+        return False
+    else:
+        result = []
+        # soup = BS(res.text, "lxml") #Not working
+        soup = BS(res.text, "html5lib")
+        font = soup.find_all('table')[2].find_all('font')[24:-60]
+        text = []
+        for i in font:
+            tmp = i.string
+            if tmp == None or tmp == ' ':
+                text.append('')
+            else:
+                text.append(tmp)
+        chunkd = chunk(text, 24)
+        for i in chunkd:
+            subject = i[0][2:]
+            score = chunk(i[4:], 4)
+            chunkd_score = []
+            for j in score:
+                for k in range(0,2):
+                    if j[k] != '':
+                        j[k] = float(j[k])
+                j.insert(0, subject)
+                chunkd_score.append(j)
+            chunkd_score = chunkd_score[:-1]
+            result.append(chunkd_score)
+        return result
+
+
+def beta_get_score():
+    '''
+    THIS BETA CONTAINS A CRITICAL BUG WHICH WAS WAUSED BY SCHOOL-END
+
+    source contains four tables
+    table[3] is coded with broken html lang (starting `tr` element inside table is missing)
+    , which cause lxml can't parse the source code properly :/
+    '''
+    scoredata = {'fncid': '010090', 'std_id': '', 'local_ip': '', 'contant': ''}
+    main.get(url + 'f_left.asp')
+    res = main.post(url + 'fnc.asp', data=scoredata)
+    res.encoding = 'big5'
+    if u"alert('本學期沒開課或學生身上沒有開課!!');" in res.text:
+        return False
+    else:
+        result = []
+        print(res.text)
+        print('===')
+        root = etree.HTML(res.text)
+        table = root.xpath('//table')
+        print(table[3].iterchildren())
+        #Get subjects that needs to be re-exammed
+        tr = table[3].xpath('.//tr')
+        for i in tr:
+            td = i.xpath('.//td')
+            for j in td:
+                font = j.xpath('.//font')
+                for k in font:
+                    text = k.xpath('./text()')
+                    if len(text) == 0:
+                        result.append('')
+                    else:
+                        result.append(text[0].strip())
+
+        return result
