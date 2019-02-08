@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ..views.lib.crawler import login, beta_get_score, beta_bs4_score, get_score
+from ..views.lib.crawler import logi
 
 username = ''
 password = ''

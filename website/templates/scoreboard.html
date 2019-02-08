@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block header %} TYSH | 成績 {% endblock %}
-{% block authed %}
+{% block authed %} 
     <br>
     <br>
-    <h1 class="ts center aligned dividing header">第{{ count }}次段考</h1>
+    <h1 class="ts center aligned dividing header">{{ subject }}</h1>
     <table class="ts large celled striped fixed table">
         <thead>
             <tr>
