@@ -16,4 +16,4 @@ from website.views import main
 @app.errorhandler(404)
 def not_found(error):
     context = "404 Not Found"
-    return render_template('errcode.html', context=context), 404
+    return render_template('errcode.jinja.html', context=context), 404

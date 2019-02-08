@@ -35,25 +35,25 @@ def index():
                 session['user'] = request.form['stdid']
                 exam_score, below_subject = get_score()
                 flash(u"登入成功")
-                return render_template('index.html', stdid=uid, parent_mode=parent_mode)
+                return render_template('index.jinja.html', stdid=uid, parent_mode=parent_mode)
             else:
                 info = u"帳號密碼錯誤，請再次確認"
-                return render_template('index.html', info=info)
+                return render_template('index.jinja.html', info=info)
         else:
             error_header = u"資料無法處理"
             error_context = u"您的登入資料無法處理，請重新登入"
-            return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context),400
+            return render_template('error.jinja.html', stdid=uid, error_header=error_header, error_context=error_context),400
     else:
         if 'redirect' in session:
             info = session['redirect']
             session.pop('redirect', None)
-            return render_template('index.html', info=info)
+            return render_template('index.jinja.html', info=info)
         elif 'logout' in session:
             info = session['logout']
             session.pop('logout', None)
-            return render_template('index.html', info=info)
+            return render_template('index.jinja.html', info=info)
         else:
-            return render_template('index.html', stdid=uid, parent_mode=parent_mode)
+            return render_template('index.jinja.html', stdid=uid, parent_mode=parent_mode)
 
 @app.route('/scoreboard/<int:counter>')
 def scoreboard(counter):
@@ -62,7 +62,7 @@ def scoreboard(counter):
         if (counter <= 0 | counter > 5): #Also Harcoded..
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
-            return render_template('error.html', stdid=uid, error_header=error_header, error_context=error_context, parent_mode=parent_mode), 400
+            return render_template('error.jinja.html', stdid=uid, error_header=error_header, error_context=error_context, parent_mode=parent_mode), 400
         if exam_score:
             pass
         else:
@@ -70,7 +70,7 @@ def scoreboard(counter):
         if exam_score == False:
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
-            return render_template('error.html', stdid=uid, parent_mode=parent_mode)
+            return render_template('error.jinja.html', stdid=uid, parent_mode=parent_mode)
         body = []
         if counter == 4:
             subject = u'平時成績'
@@ -86,7 +86,7 @@ def scoreboard(counter):
             for i in exam_score:
                 body.append(i[counter-1])
             head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
-        return render_template('scoreboard.html', head=head, body=body, stdid=uid, count=counter, parent_mode=parent_mode, subject=subject)
+        return render_template('scoreboard.jinja.html', head=head, body=body, stdid=uid, count=counter, parent_mode=parent_mode, subject=subject)
 
     else:
         session['redirect'] = u'請先登入系統'
@@ -122,4 +122,4 @@ def beta(counter):
         head = [u'科目', u'成績']
     else:
         head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
-    return render_template('scoreboard.html', head=head, body=body, stdid=uid, count=counter)
+    return render_template('scoreboard.jinja.html', head=head, body=body, stdid=uid, count=counter)
