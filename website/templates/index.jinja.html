@@ -4,54 +4,58 @@
 {% block active_mobile_home %} active {% endblock %}
 
 {% block authed %}
-<br>
-<br>
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for i in messages %}
-        <div class="ts center aligned inverted positive segment">{{ i }}</div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-<div class="ts large header">
-    <i class="announcement top aligned icon "></i>
-    <div class="content">
-        官方公告
-        <div class="sub header"> 部署在 heroku , 開始進入 Beta 階段拉！</div>
+<div class="ts very narrow container">
+    <br>
+    <br>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for i in messages %}
+            <div class="ts center aligned inverted positive segment">{{ i }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="ts large header">
+        <i class="announcement top aligned icon "></i>
+        <div class="content">
+            官方公告
+            <div class="sub header"> 部署在 heroku , 開始進入 Beta 階段拉！</div>
+        </div>
     </div>
-</div>
-<br>
-<div class="ts inverted info segment">
-    <p> 請注意以下幾點事項 </p>
-    <p> 1. 本網站並非桃園高中成績系統</p>
-    <p> 2. 本網站並無紀錄任何資料</p>
-    <p> 3. 本網站已開源在GitHub上</p>
-    <p> 4. 請勿嘗試攻擊本網站</p>
-    <p> 5. 本網站架構於免費平台，所以會導致讀取時間加長，請耐心等待</p>
-    <p> 6. 如果學校網管有任何問題，請別查水表，如有需要聯繫，請傳 email 至 <code>root [@] racterub [.] me</code></p>
+    <br>
+    <div class="ts inverted info segment">
+        <p> 請注意以下幾點事項 </p>
+        <p> 1. 本網站並非桃園高中成績系統</p>
+        <p> 2. 本網站並無紀錄任何資料</p>
+        <p> 3. 本網站已開源在GitHub上</p>
+        <p> 4. 請勿嘗試攻擊本網站</p>
+        <p> 5. 本網站架構於免費平台，所以會導致讀取時間加長，請耐心等待</p>
+        <p> 6. 如果學校網管有任何問題，請別查水表，如有需要聯繫，請傳 email 至 <code>root [@] racterub [.] me</code></p>
+    </div>
 </div>
 {% endblock %}
 {% block body %}
-<br>
-<br>
-<h1 class="ts center aligned header">
-    請登入系統
-<div class="sub header">帳號密碼皆為原系統的帳號密碼組合</div>
-</h1>
-<div class="ts centered secondary segment">
-    {% if info %}
-    <div class="ts center aligned inverted negative message">{{ info }}</div>
-    {% endif %}
-    <form class="ts form" action="" method="POST">
-        <div class="field">
-            <label>帳號</label>
-            <input type="text" required="required" name="stdid" id="stdid" placeholder="請輸入你的學號">
-        </div>
-        <div class="field">
-            <label>密碼</label>
-            <input type="password" required="required" name="stdpwd" id="stdpwd" placeholder="請輸入你的密碼">
-        </div>
-        <input type="submit" value="登入" class="ts info fluid button" onclick="check()">
-    </form>
+<div class="ts very narrow container">
+    <br>
+    <br>
+    <h1 class="ts center aligned header">
+        請登入系統
+    <div class="sub header">帳號密碼皆為原系統的帳號密碼組合</div>
+    </h1>
+    <div class="ts centered secondary segment">
+        {% if info %}
+        <div class="ts center aligned inverted negative message">{{ info }}</div>
+        {% endif %}
+        <form class="ts form" action="" method="POST">
+            <div class="field">
+                <label>帳號</label>
+                <input type="text" required="required" name="stdid" id="stdid" placeholder="請輸入你的學號">
+            </div>
+            <div class="field">
+                <label>密碼</label>
+                <input type="password" required="required" name="stdpwd" id="stdpwd" placeholder="請輸入你的密碼">
+            </div>
+            <input type="submit" value="登入" class="ts info fluid button" onclick="check()">
+        </form>
+    </div>
 </div>
 {% endblock %}

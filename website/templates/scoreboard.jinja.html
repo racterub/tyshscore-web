@@ -1,6 +1,7 @@
 {% extends "layout.jinja.html" %}
 {% block header %} TYSH | 成績 {% endblock %}
-{% block authed %} 
+{% block authed %}
+<div class="ts very narrow container">
     <br>
     <br>
     <h1 class="ts center aligned dividing header">{{ subject }}</h1>
@@ -26,5 +27,5 @@
             {% endfor %}
         </tbody>
     </table>
-    </div>
+</div>
 {% endblock %}
