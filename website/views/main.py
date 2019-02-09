@@ -8,13 +8,13 @@ from flask import request, flash, session, render_template, redirect, url_for, m
 from website import app
 from lxml import etree
 import requests
-from website.views.lib.crawler import login, get_score
+from website.views.lib.crawler import login, get_term_score
 
 #Initial globs
 uid = u''
 parent_mode=False
-#exam_score
-#below_subject
+exam_score = []
+below_subject = []
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -33,7 +33,7 @@ def index():
                     parent_mode = False
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
-                exam_score, below_subject = get_score()
+                exam_score, below_subject = get_term_score()
                 flash(u"登入成功")
                 return render_template('index.jinja.html', stdid=uid, parent_mode=parent_mode)
             else:
@@ -66,7 +66,7 @@ def scoreboard(counter):
         if exam_score:
             pass
         else:
-            exam_score, below_subject = get_score()
+            exam_score, below_subject = get_term_score()
         if exam_score == False:
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
@@ -104,22 +104,8 @@ def logout():
 def robotstxt():
     return send_from_directory('static', 'robots.txt')
 
-@app.route('/beta/<int:counter>')
-def beta(counter):
+@app.route('/beta/')
+def beta():
     global uid
-    global content
-    uid = ''
-    login(uid, '')
-    session['user'] = uid
-    if content:
-        pass
-    else:
-        content = beta_bs4_score()
-    body = []
-    for i in content:
-        body.append(i[counter-1])
-    if counter == 4:
-        head = [u'科目', u'成績']
-    else:
-        head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
-    return render_template('scoreboard.jinja.html', head=head, body=body, stdid=uid, count=counter)
+    session['user'] = 'test'
+    return render_template('test.jinja.html', stdid=uid)

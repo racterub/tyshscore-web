@@ -12,6 +12,18 @@ import requests
 main = requests.Session()
 url = 'http://skyweb.tysh.tyc.edu.tw/skyweb/'
 
+
+## Module Defs
+term_score = "010090"
+year_score = "010100"
+history_term_score = "010110"
+history_year_score = "010120"
+term_pr = "010040"
+history_pr = "010050"
+history_pc = "010060"
+
+
+
 #score defs
 total_col = 16
 per_col = 4
@@ -40,15 +52,15 @@ def chunk(l, size):
     for i in range(0, len(l), size):
         yield l[i:i+size]
 
-def get_score():
-    '''
+def get_term_score():
+    '''ß
     Due to broken html tag from school-end, I'm using html5lib to parse the page.
     Etree will be removed and no longer used in the project.
     def:
         table[2] -> score
         table[3] -> subjects under 60
     '''
-    scoredata = {'fncid': '010090', 'std_id': '', 'local_ip': '', 'contant': ''}
+    scoredata = {'fncid': term_score, 'std_id': '', 'local_ip': '', 'contant': ''}
     main.get(url + 'f_left.asp')
     res = main.post(url + 'fnc.asp', data=scoredata)
     res.encoding = 'big5'
@@ -97,7 +109,7 @@ def get_score():
                     i[k] = float(i[k])
         return exam_score, below_subject
 
-def get_pun_rew():
+def get_history_pr():
     '''
     Get rewards and punichments from school system
     def:
@@ -105,13 +117,26 @@ def get_pun_rew():
         table[3] -> detail
         table[4] -> special(assume useless)
     '''
-    scoredata = {'fncid': '010090', 'std_id': '', 'local_ip': '', 'contant': ''}
+    scoredata = {'fncid': history_pr, 'std_id': '', 'local_ip': '', 'contant': ''}
     main.get(url + 'f_left.asp')
     res = main.post(url + 'fnc.asp', data=scoredata)
     res.encoding = 'big5'
     soup = BS(res.text, "html5lib")
     table = soup.find_all('table')
     chart = []
-    
-    print(table)
+    table_chart = table[2].stripped_strings
+    for i in table_chart:
+        chart.append(i)
+    # for i in table_chart:
+    #     tmp = i.find('font')
+    #     if tmp:
+    #         chart.append(tmp.string)
+    #     else:
+    #         chart.append(i.string)
+
+    print(chart)
+    # for i in table_chart:
+        # print(i)
+    # print(table_chart)
+    # print(type(table_chart))
     return None
