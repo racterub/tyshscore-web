@@ -97,8 +97,8 @@ def get_term_score():
         else:
             font = table[3].find_all('font')[5:]
             text = []
-            for l in font:
-                tmp = l.string
+            for i in font:
+                tmp = i.string
                 if tmp == None or tmp == '':
                     text.append('')
                 else:
@@ -114,6 +114,7 @@ def get_history_pr():
     Get rewards and punichments from school system
     def:
         table[2] -> chart
+
         table[3] -> detail
         table[4] -> special(assume useless)
     '''
@@ -123,20 +124,16 @@ def get_history_pr():
     res.encoding = 'big5'
     soup = BS(res.text, "html5lib")
     table = soup.find_all('table')
-    chart = []
-    table_chart = table[2].stripped_strings
-    for i in table_chart:
-        chart.append(i)
-    # for i in table_chart:
-    #     tmp = i.find('font')
-    #     if tmp:
-    #         chart.append(tmp.string)
-    #     else:
-    #         chart.append(i.string)
-
-    print(chart)
-    # for i in table_chart:
-        # print(i)
-    # print(table_chart)
-    # print(type(table_chart))
-    return None
+    chart = list(table[2].stripped_strings)
+    chart_chunkd = list(chunk(chart, 10))[1:-1]
+    total = chart_chunkd[-1]
+    pr_pen_chart = []
+    pr_rew_chart = []
+    for i in chart_chunkd:
+        time = i[0:2]
+        data = list(chunk(i[2:], 4))
+        for i in range(2):
+            data[i] = time + data[i]
+        pr_pen_chart.append(data[1])
+        pr_rew_chart.append(data[0])
+    return pr_rew_chart, pr_pen_chart

@@ -8,7 +8,7 @@ from flask import request, flash, session, render_template, redirect, url_for, m
 from website import app
 from lxml import etree
 import requests
-from website.views.lib.crawler import login, get_term_score
+from website.views.lib.crawler import login, get_term_score, get_history_pr
 
 #Initial globs
 uid = u''
@@ -107,5 +107,9 @@ def robotstxt():
 @app.route('/beta/')
 def beta():
     global uid
-    session['user'] = 'test'
-    return render_template('test.jinja.html', stdid=uid)
+    login()
+    session['user'] = 'debug'
+    pr_rew_chart_data, pr_pen_chart_data = get_history_pr()
+    pr_rew_chart_header=[u'年度', u'學期', u'大功', u'小功', u'嘉獎', u'優點']
+    pr_pen_chart_header=[u'年度', u'學期', u'大過', u'小過', u'警告', u'缺點']
+    return render_template('test.jinja.html', stdid=uid, pr_rew_chart_header=pr_rew_chart_header, pr_pen_chart_header=pr_pen_chart_header, pr_rew_chart_data=pr_rew_chart_data,pr_pen_chart_data=pr_pen_chart_data)

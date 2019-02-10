@@ -1,0 +1,74 @@
+{% extends "layout.jinja.html" %}
+{% block header %} TYSH | 補考 {% endblock %}
+{% block authed %}
+<h1 class="ts center aligned dividing header">{{ subject }}</h1>
+<div class="ts narrow container">
+<div class="ts two cards">
+    <div class="ts negative card">
+        <div class="content">
+            <div class="header">獎懲要爆拉</div>
+            <div class="description">
+                你的獎懲（已功過相抵）目前低於畢業門檻，請努力消過。
+            </div>
+        </div>
+        <div class="symbol">
+            <i class="caution circle icon"></i>
+        </div>
+    </div>
+    <div class="ts centered info card">
+        <div class="content">
+            <div class="header">需消過次數</div>
+            <div class="description">
+                <ul>
+                    <li>大過{{ a }}次</li>
+                    <li>小過{{ b }}次</li>
+                    <li>警告{{ c }}次</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ts relaxed centered stackable grid">
+    <div class="eight wide column">
+        <table class="ts stripped table">
+            <thead>
+                <tr>
+                    {% for i in pr_rew_chart_header %}
+                        <th>{{ i }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in pr_rew_chart_data %}
+                    <tr>
+                        {% for k in i %}
+                            <td>{{ k }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="eight wide column">
+        <table class="ts stripped table">
+            <thead>
+                <tr>
+                    {% for i in pr_pen_chart_header %}
+                        <th>{{ i }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in pr_pen_chart_data %}
+                    <tr>
+                        {% for k in i %}
+                            <td>{{ k }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+{% endblock %}
