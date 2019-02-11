@@ -124,9 +124,14 @@ def get_history_pr():
     res.encoding = 'big5'
     soup = BS(res.text, "html5lib")
     table = soup.find_all('table')
-    chart = list(table[2].stripped_strings)
-    chart_chunkd = list(chunk(chart, 10))[1:-1]
-    total = chart_chunkd[-1]
+    #Remove <br> tag
+    for i in soup.find_all('br'):
+        i.extract()
+    #pr_table
+    text = list(table[2].stripped_strings)
+    text_chunkd = list(chunk(text, 10))
+    chart_chunkd = text_chunkd[1:-1]
+    pr_chart_total = text_chunkd[-1]
     pr_pen_chart = []
     pr_rew_chart = []
     for i in chart_chunkd:
@@ -136,4 +141,19 @@ def get_history_pr():
             data[i] = time + data[i]
         pr_pen_chart.append(data[1])
         pr_rew_chart.append(data[0])
-    return pr_rew_chart, pr_pen_chart
+    text = table[3].find_all('font')
+    d_chart = []
+    for i in text:
+        tmp = i.string
+        if tmp == '' or tmp == None:
+            d_chart.append('')
+        else:
+            d_chart.append(tmp)
+    pin = d_chart[2:].index(u'簽呈日期')
+    d_pr_rew_chart = list(chunk(d_chart[1:pin+1], 12))
+    d_pr_pen_chart = list(chunk(d_chart[pin+2:], 12))
+    print(d_chart)
+    print(d_chart[pin])
+    print(d_pr_rew_chart)
+    print(d_pr_pen_chart)
+    return pr_rew_chart, pr_pen_chart,pr_chart_total, d_pr_rew_chart, d_pr_pen_chart

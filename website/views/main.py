@@ -13,12 +13,10 @@ from website.views.lib.crawler import login, get_term_score, get_history_pr
 #Initial globs
 uid = u''
 parent_mode=False
-exam_score = []
-below_subject = []
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    global uid, exam_score, below_subject, parent_mode
+    global uid, parent_mode
     if request.method == "POST":
         if request.form:
             stdid = request.form['stdid']
@@ -33,7 +31,6 @@ def index():
                     parent_mode = False
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
-                exam_score, below_subject = get_term_score()
                 flash(u"登入成功")
                 return render_template('index.jinja.html', stdid=uid, parent_mode=parent_mode)
             else:
@@ -57,16 +54,17 @@ def index():
 
 @app.route('/scoreboard/<int:counter>')
 def scoreboard(counter):
-    global uid, exam_score, below_subject, parent_mode
+    global uid, parent_mode
     if 'user' in session:
         if (counter <= 0 | counter > 5): #Also Harcoded..
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
-            return render_template('error.jinja.html', stdid=uid, error_header=error_header, error_context=error_context, parent_mode=parent_mode), 400
-        if exam_score:
-            pass
-        else:
-            exam_score, below_subject = get_term_score()
+            return render_template('error.jinja.html',
+                stdid=uid,
+                error_header=error_header,
+                error_context=error_context,
+                parent_mode=parent_mode), 400
+        exam_score, below_subject = get_term_score()
         if exam_score == False:
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
@@ -86,7 +84,13 @@ def scoreboard(counter):
             for i in exam_score:
                 body.append(i[counter-1])
             head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
-        return render_template('scoreboard.jinja.html', head=head, body=body, stdid=uid, count=counter, parent_mode=parent_mode, subject=subject)
+        return render_template('scoreboard.jinja.html',
+            head=head,
+            body=body,
+            stdid=uid,
+            count=counter,
+            parent_mode=parent_mode,
+            subject=subject)
 
     else:
         session['redirect'] = u'請先登入系統'
@@ -104,12 +108,36 @@ def logout():
 def robotstxt():
     return send_from_directory('static', 'robots.txt')
 
-@app.route('/beta/')
-def beta():
-    global uid
-    login()
-    session['user'] = 'debug'
-    pr_rew_chart_data, pr_pen_chart_data = get_history_pr()
-    pr_rew_chart_header=[u'年度', u'學期', u'大功', u'小功', u'嘉獎', u'優點']
-    pr_pen_chart_header=[u'年度', u'學期', u'大過', u'小過', u'警告', u'缺點']
-    return render_template('test.jinja.html', stdid=uid, pr_rew_chart_header=pr_rew_chart_header, pr_pen_chart_header=pr_pen_chart_header, pr_rew_chart_data=pr_rew_chart_data,pr_pen_chart_data=pr_pen_chart_data)
+@app.route('/history_pr/')
+def history_pr():
+    global uid, parent_mode
+    if 'user' in session:
+        pr_rew_chart_data, pr_pen_chart_data, pr_chart_total, d_pr_rew_chart_data, d_pr_pen_chart_data= get_history_pr()
+        pen_result = [int(i) for i in pr_chart_total[5:-1]]
+        sumcheck = 0
+        for i in range(len(pen_result)):
+            sumcheck += pen_result[::-1][i] * (3**i)
+        if sumcheck >= 27:
+            pen_check = False
+        else:
+            pen_check = True
+        pr_rew_chart_header=[u'年度', u'學期', u'大功', u'小功', u'嘉獎', u'優點']
+        pr_pen_chart_header=[u'年度', u'學期', u'大過', u'小過', u'警告', u'缺點']
+        return render_template('history_pr.jinja.html',
+            stdid=uid,
+            pr_rew_chart_header=pr_rew_chart_header,
+            pr_pen_chart_header=pr_pen_chart_header,
+            pr_rew_chart_data=pr_rew_chart_data,
+            pr_pen_chart_data=pr_pen_chart_data,
+            d_pr_rew_chart_header=d_pr_rew_chart_data[0],
+            d_pr_rew_chart_data=d_pr_rew_chart_data[1:],
+            d_pr_pen_chart_header=d_pr_pen_chart_data[0],
+            d_pr_pen_chart_data=d_pr_pen_chart_data[1:],
+            pen_check=pen_check,
+            t_p=pen_result[0],
+            s_p=pen_result[1],
+            f_p=pen_result[2],
+            subject=u'歷年獎懲')
+    else:
+        session['redirect'] = u'請先登入系統'
+        return redirect(url_for('index'))

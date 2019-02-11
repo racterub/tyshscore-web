@@ -1,6 +1,7 @@
 {% extends "layout.jinja.html" %}
 {% block header %}TYSH | {{ error_header }}{% endblock %}
 {% block authed %}
+<div class="ts narrow container">
 	<br>
 	<br>
 	<div class="ts center aligned raised negative very padded segment">
@@ -9,4 +10,5 @@
 	    	<div class="sub header">{{ error_context }}<div>
 		</h3>
 	</div>
+</div>
 {% endblock %}

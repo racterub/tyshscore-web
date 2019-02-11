@@ -1,0 +1,138 @@
+{% extends "layout.jinja.html" %}
+{% block header %} TYSH | 補考 {% endblock %}
+{% block authed %}
+<h1 class="ts center aligned dividing header">{{ subject }}</h1>
+<div class="ts container">
+    <div class="ts two cards">
+        {% if pen_check %}
+        <div class="ts inverted positive card">
+            <div class="content">
+                <div class="header">獎懲通過學校規定</div>
+                <div class="description">
+                    你的獎懲（已功過相抵）目前通過畢業門檻，請繼續保持。
+                </div>
+            </div>
+            <div class="symbol">
+                <i class="check circle icon"></i>
+            </div>
+        </div>
+        {% else %}
+        <div class="ts inverted negative card">
+            <div class="content">
+                <div class="header">獎懲要爆拉</div>
+                <div class="description">
+                    你的獎懲（已功過相抵）目前低於畢業門檻，請努力消過。
+                </div>
+            </div>
+            <div class="symbol">
+                <i class="caution circle icon"></i>
+            </div>
+        </div>
+        {% endif %}
+        <div class="ts centered info card">
+            <div class="content">
+                <div class="header">目前剩餘懲罰次數</div>
+                <div class="description">
+                    <ul>
+                        <li>大過{{ t_p }}次</li>
+                        <li>小過{{ s_p }}次</li>
+                        <li>警告{{ f_p }}次</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ts horizontal divider">・・・</div>
+    <div class="ts big header">獎懲總表</div>
+    <div class="ts relaxed centered stackable grid">
+        <div class="eight wide column">
+            <div class="ts big sub header">獎勵</div>
+            <table class="ts stripped table">
+                <thead>
+                    <tr>
+                        {% for i in pr_rew_chart_header %}
+                            <th>{{ i }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in pr_rew_chart_data %}
+                        <tr>
+                            {% for k in i %}
+                                <td>{{ k }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="eight wide column">
+            <div class="ts big sub header">懲罰</div>
+            <table class="ts stripped table">
+                <thead>
+                    <tr>
+                        {% for i in pr_pen_chart_header %}
+                            <th>{{ i }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in pr_pen_chart_data %}
+                        <tr>
+                            {% for k in i %}
+                                <td>{{ k }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="sixteen wide column">
+            <div class="ts big header">獎懲紀錄</div>
+        </div>
+        <div class="eight wide column">
+            <div class="ts big sub header">獎勵</div>
+            <table class="ts stripped table">
+                <thead>
+                    <tr>
+                        {% for i in d_pr_rew_chart_header %}
+                            <th>{{ i }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in d_pr_rew_chart_data %}
+                        <tr>
+                            {% for k in i %}
+                                <td>{{ k }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="eight wide column">
+            <div class="ts big sub header">獎勵</div>
+            <table class="ts stripped table">
+                <thead>
+                    <tr>
+                        {% for i in d_pr_pen_chart_header %}
+                            <th>{{ i }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in d_pr_pen_chart_data %}
+                        <tr>
+                            {% for k in i %}
+                                <td>{{ k }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

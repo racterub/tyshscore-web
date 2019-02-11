@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ..views.lib.crawler import login, get_history_pr, get_term_score
+from ..views.lib.crawler import login, get_history_pr
 
 username = ''
 password = ''
@@ -11,5 +11,5 @@ login(username, password)
 # print(beta_bs4_score())
 # print(get_score())
 
-print(get_history_pr())
+get_history_pr()
 # print(get_term_score())
