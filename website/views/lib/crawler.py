@@ -60,6 +60,7 @@ def get_term_score():
         table[2] -> score
         table[3] -> subjects under 60
     '''
+    ''' THIS NEED SOME REWRITES '''
     scoredata = {'fncid': term_score, 'std_id': '', 'local_ip': '', 'contant': ''}
     main.get(url + 'f_left.asp')
     res = main.post(url + 'fnc.asp', data=scoredata)

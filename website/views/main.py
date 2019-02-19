@@ -22,13 +22,11 @@ def index():
             stdid = request.form['stdid']
             stdpwd = request.form['stdpwd']
             status = login(stdid, stdpwd)
-            if status == True:
+            if status:
                 if stdid[-1] == "p":
                     stdid = stdid[:-1]
                     parent_mode = True
                     flash(u"將使用家長模式登入")
-                else:
-                    parent_mode = False
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
                 flash(u"登入成功")
