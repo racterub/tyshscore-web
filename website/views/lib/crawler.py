@@ -9,6 +9,7 @@ from lxml import etree
 from bs4 import BeautifulSoup as BS
 import requests
 
+
 main = requests.Session()
 url = 'http://skyweb.tysh.tyc.edu.tw/skyweb/'
 
@@ -21,7 +22,6 @@ history_year_score = "010120"
 term_pr = "010040"
 history_pr = "010050"
 history_pc = "010060"
-
 
 
 #score defs
@@ -68,6 +68,9 @@ def get_term_score():
     if u"alert('本學期沒開課或學生身上沒有開課!!');" in res.text:
         return False
     else:
+        '''
+        This will be simplfied in the future
+        '''
         exam_score = []
         soup = BS(res.text, "html5lib")
         table = soup.find_all('table')
@@ -125,10 +128,8 @@ def get_history_pr():
     res.encoding = 'big5'
     soup = BS(res.text, "html5lib")
     table = soup.find_all('table')
-    #Remove <br> tag
     for i in soup.find_all('br'):
         i.extract()
-    #pr_table
     text = list(table[2].stripped_strings)
     text_chunkd = list(chunk(text, 10))
     chart_chunkd = text_chunkd[1:-1]
