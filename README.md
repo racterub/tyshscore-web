@@ -3,6 +3,7 @@ TYSHscore Web
 
 ## A Flask based system.
 For this build, only semestral exam is avaliable.
+**MAYBE** all skyweb's system works :/
 
 Screenshot:
 
@@ -27,6 +28,13 @@ Screenshot:
         ├── lib
         └── main.py
 ```
+## How to use:
+**This Project is using python3, and PLEASE use python3.**
+
+1. Edit the config.
+2. run `pip3 install -r requirements.txt`
+3. run `python3 serve.py` (add dev at the end of the command will open debug mode)
+4. Profit :)
 
 ### Some thing needs to note here:
 

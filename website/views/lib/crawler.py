@@ -13,8 +13,7 @@ import requests
 main = requests.Session()
 url = 'http://skyweb.tysh.tyc.edu.tw/skyweb/'
 
-
-## Module Defs
+## Module IDs
 term_score = "010090"
 year_score = "010100"
 history_term_score = "010110"
@@ -23,16 +22,11 @@ term_pr = "010040"
 history_pr = "010050"
 history_pc = "010060"
 
-
-#score defs
-total_col = 16
-per_col = 4
-
 def login(stdid, stdpwd):
     '''
     Login to school system
     All process relies on school-end
-    This func only passes the input to server, and for now, I'm not implementing some sec-related stuff
+    This func only passes the input to server. And for now, I'm not implementing some sec-related stuff.
     '''
     loginData = {'txtid': stdid, 'txtpwd': stdpwd, 'check': 'confirm'}
     r = main.get(url+'main.asp', data=loginData)
@@ -41,7 +35,6 @@ def login(stdid, stdpwd):
         return True
     else:
         return False
-
 
 def chunk(l, size):
     '''
@@ -53,7 +46,7 @@ def chunk(l, size):
         yield l[i:i+size]
 
 def get_term_score():
-    '''ß
+    '''
     Due to broken html tag from school-end, I'm using html5lib to parse the page.
     Etree will be removed and no longer used in the project.
     def:
@@ -118,7 +111,6 @@ def get_history_pr():
     Get rewards and punichments from school system
     def:
         table[2] -> chart
-
         table[3] -> detail
         table[4] -> special(assume useless)
     '''

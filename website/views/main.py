@@ -14,6 +14,21 @@ from website.views.lib.crawler import login, get_term_score, get_history_pr
 uid = u''
 parent_mode=False
 
+class User:
+    def __init__(self, uid, passwd):
+        self.uid = uid
+        self.passwd = passwd
+        checkd = login(self.uid, self.passwd)
+        if checkd:
+            session['user'] = self.uid
+            self.status = True
+    def status(self):
+        return self.status
+    def __str__(self)
+        return self.uid
+
+
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
     global uid, parent_mode
