@@ -67,44 +67,51 @@ def get_term_score():
         exam_score = []
         soup = BS(res.text, "html5lib")
         table = soup.find_all('table')
-        font = table[2].find_all('font')[24:-60]
-        text = []
-        for i in font:
-            tmp = i.string
-            if tmp == None or tmp == ' ':
-                text.append('')
-            else:
-                text.append(tmp)
-        chunkd = chunk(text, 24)
-        for i in chunkd:
-            subject = i[0][2:]
-            score = chunk(i[4:], 4)
-            chunkd_score = []
-            for j in score:
-                for k in range(0,2):
-                    if j[k]:
-                        j[k] = float(j[k])
-                j.insert(0, subject)
-                chunkd_score.append(j)
-            chunkd_score = chunkd_score[:-1]
-            chunkd_score[-1] = chunkd_score[-1][:-3]
-            exam_score.append(chunkd_score)
-        if len(table) != 4:
-            below_subject = False
-        else:
-            font = table[3].find_all('font')[5:]
-            text = []
-            for i in font:
-                tmp = i.string
-                if tmp == None or tmp == '':
-                    text.append('')
-                else:
-                    text.append(tmp)
-            below_subject = list(chunk(text, 4))
-            for i in below_subject:
-                for k in range(1, 3):
-                    i[k] = float(i[k])
-        return exam_score, below_subject
+        tr =  table[2].find_all('tr')[1:-7]
+        print(tr)
+        # for i in tr:
+        #     for k in i.find_all('font'):
+        #         tmp = k.string
+        #         print(tmp)
+        # font = table[2].find_all('font')[24:-60]
+        # text = []
+        # for i in font:
+        #     tmp = i.string
+        #     if tmp == None or tmp == ' ':
+        #         text.append('')
+        #     else:
+        #         text.append(tmp)
+        # chunkd = chunk(text, 24)
+        # for i in chunkd:
+        #     subject = i[0][2:]
+        #     score = chunk(i[4:], 4)
+        #     chunkd_score = []
+        #     for j in score:
+        #         for k in range(0,2):
+        #             if j[k]:
+        #                 j[k] = float(j[k])
+        #         j.insert(0, subject)
+        #         chunkd_score.append(j)
+        #     chunkd_score = chunkd_score[:-1]
+        #     chunkd_score[-1] = chunkd_score[-1][:-3]
+        #     exam_score.append(chunkd_score)
+        # if len(table) != 4:
+        #     below_subject = False
+        # else:
+        #     font = table[3].find_all('font')[5:]
+        #     text = []
+        #     for i in font:
+        #         tmp = i.string
+        #         if tmp == None or tmp == '':
+        #             text.append('')
+        #         else:
+        #             text.append(tmp)
+        #     below_subject = list(chunk(text, 4))
+        #     for i in below_subject:
+        #         for k in range(1, 3):
+        #             i[k] = float(i[k])
+        # return exam_score, below_subject
+        return None
 
 def get_history_pr():
     '''
@@ -146,8 +153,4 @@ def get_history_pr():
     pin = d_chart[2:].index(u'簽呈日期')
     d_pr_rew_chart = list(chunk(d_chart[1:pin+1], 12))
     d_pr_pen_chart = list(chunk(d_chart[pin+2:], 12))
-    print(d_chart)
-    print(d_chart[pin])
-    print(d_pr_rew_chart)
-    print(d_pr_pen_chart)
     return pr_rew_chart, pr_pen_chart,pr_chart_total, d_pr_rew_chart, d_pr_pen_chart
