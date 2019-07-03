@@ -1,5 +1,8 @@
 {% extends "layout.jinja.html" %}
-{% block header %} TYSH | 補考 {% endblock %}
+{% block header %} TYSH | 歷年獎懲 {% endblock %}
+{% block active_large_pr %}active{% endblock %}
+{% block active_mobile_pr %}active{% endblock %}
+
 {% block authed %}
 <h1 class="ts center aligned dividing header">{{ subject }}</h1>
 <div class="ts container">
@@ -19,9 +22,9 @@
         {% else %}
         <div class="ts inverted negative card">
             <div class="content">
-                <div class="header">獎懲要爆拉</div>
+                <div class="header">獎懲未通過學校規定</div>
                 <div class="description">
-                    你的獎懲（已功過相抵）目前低於畢業門檻，請努力消過。
+                    你的獎懲（已功過相抵）目前低於畢業門檻，請努力消過，再繼續擺爛就不能畢業了🙃🙃
                 </div>
             </div>
             <div class="symbol">
@@ -43,7 +46,8 @@
         </div>
     </div>
     <div class="ts horizontal divider">・・・</div>
-    <div class="ts big header">獎懲總表</div>
+    <div class="ts hidden divider"></div>
+    <h2 class="ts big dividing center aligned header">獎懲總表</h2>
     <div class="ts relaxed centered stackable grid">
         <div class="eight wide column">
             <div class="ts big sub header">獎勵</div>
@@ -67,7 +71,7 @@
             </table>
         </div>
         <div class="eight wide column">
-            <div class="ts big sub header">懲罰</div>
+            <div class="ts big sub header">懲處</div>
             <table class="ts stripped table">
                 <thead>
                     <tr>
@@ -88,7 +92,7 @@
             </table>
         </div>
         <div class="sixteen wide column">
-            <div class="ts big header">獎懲紀錄</div>
+            <h2 class="ts big dividing center aligned header">獎懲紀錄</h2>
         </div>
         <div class="eight wide column">
             <div class="ts big sub header">獎勵</div>
@@ -112,7 +116,7 @@
             </table>
         </div>
         <div class="eight wide column">
-            <div class="ts big sub header">獎勵</div>
+            <div class="ts big sub header">懲處</div>
             <table class="ts stripped table">
                 <thead>
                     <tr>
