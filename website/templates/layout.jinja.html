@@ -45,7 +45,7 @@
                     {% endif %}
                 </div>
             </div>
-            <a href="{{ url_for('history_pr') }}" class="item">歷年獎懲</a>
+            <a href="{{ url_for('history_pr') }}" class="{% block active_mobile_pr %}{% endblock %} item">歷年獎懲</a>
             <a href="#" class="disabled item">缺曠紀錄</a>
         {% endif %}
         <a href="https://github.com/racterub/tyshscore-web" class="item">GitHub</a>
@@ -68,7 +68,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    <a href="{{ url_for('history_pr') }}" class="{% block name %}{% endblock %} item">歷年獎懲</a>
+                    <a href="{{ url_for('history_pr') }}" class="{% block active_large_pr %}{% endblock %} item">歷年獎懲</a>
                     <a href="#" class="disabled item">缺曠紀錄</a>
                 {% else %}
                 {% endif %}
