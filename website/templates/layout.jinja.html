@@ -48,7 +48,7 @@
             <a href="{{ url_for('history_pr') }}" class="{% block active_mobile_pr %}{% endblock %} item">歷年獎懲</a>
             <a href="#" class="disabled item">缺曠紀錄</a>
         {% endif %}
-        <a href="https://github.com/racterub/tyshscore-web" class="item">GitHub</a>
+        <a href="https://github.com/racterub/tyshscore-web" class="item">GitHub Commit:{{ commit }}</a>
     </div>
     <div class="pusher">
         <div class="large device only">
@@ -85,7 +85,7 @@
                         </div>
                     {% else %}
                     {% endif %}
-                    <a href="https://github.com/racterub/tyshscore-web" class="item">GitHub</a>
+                    <a href="https://github.com/racterub/tyshscore-web" class="item">GitHub Commit:{{ commit }}</a>
                     </div>
             </div>
             <div class="ts hidden divider"></div>
