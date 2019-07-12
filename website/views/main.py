@@ -13,12 +13,20 @@ import json
 
 #Initial globs
 uid = u''
+commit = ''
 
+def getLastCommit():
+    global commit
+    r = requests.get('https://api.github.com/repos/racterub/tyshscore-web/commits/master')
+    data = json.loads(r.text)
+    commit = data['sha'][:6]
 
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    global uid
+    global uid, commit
+    if not commit:
+        getLastCommit()
     if request.method == "POST":
         if request.form:
             stdid = request.form['stdid']
@@ -28,42 +36,45 @@ def index():
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
                 flash(u"登入成功")
-                return render_template('index.jinja.html', stdid=uid)
+                return render_template('index.jinja.html', stdid=uid, commit=commit)
             else:
                 info = u"帳號密碼錯誤，請再次確認"
-                return render_template('index.jinja.html', info=info)
+                return render_template('index.jinja.html', info=info, commit=commit)
         else:
             error_header = u"資料無法處理"
             error_context = u"您的登入資料無法處理，請重新登入"
-            return render_template('error.jinja.html', stdid=uid, error_header=error_header, error_context=error_context),400
+            return render_template('error.jinja.html', stdid=uid, error_header=error_header, error_context=error_context, commit=commit),400
     else:
         if 'redirect' in session:
             info = session['redirect']
             session.pop('redirect', None)
-            return render_template('index.jinja.html', info=info)
+            return render_template('index.jinja.html', info=info, commit=commit)
         elif 'logout' in session:
             info = session['logout']
             session.pop('logout', None)
-            return render_template('index.jinja.html', info=info)
+            return render_template('index.jinja.html', info=info, commit=commit)
         else:
-            return render_template('index.jinja.html', stdid=uid)
+            return render_template('index.jinja.html', stdid=uid, commit=commit)
 
 @app.route('/scoreboard/<int:counter>')
 def scoreboard(counter):
     global uid
     if 'user' in session:
+        if not commit:
+            getLastCommit()
         if (counter <= 0 | counter > 5):
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
             return render_template('error.jinja.html',
                 stdid=uid,
                 error_header=error_header,
-                error_context=error_context), 400
+                error_context=error_context,
+                commit=commit), 400
         exam_score_type, exam_score, below_subject = get_term_score()
         if exam_score == False:
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
-            return render_template('error.jinja.html', stdid=uid)
+            return render_template('error.jinja.html', stdid=uid, commit=commit)
         body = []
         if exam_score_type == 2:
             if counter == 4:
@@ -85,12 +96,13 @@ def scoreboard(counter):
                 body=body,
                 stdid=uid,
                 count=counter,
+                commit=commit,
                 subject=subject)
         else:
             if counter == 3:
                 error_header = u"資料無法處理"
                 error_context = u"高三並無第三次段考"
-                return render_template('error.jinja.html', error_context=error_context, error_header=error_header)
+                return render_template('error.jinja.html', error_context=error_context, error_header=error_header, commit=commit)
             else:
                 if counter == 4:
                     subject = u'平時成績'
@@ -111,6 +123,7 @@ def scoreboard(counter):
                 body=body,
                 stdid=uid,
                 count=counter,
+                commit=commit,
                 subject=subject)
 
     else:
@@ -133,6 +146,8 @@ def robotstxt():
 def history_pr():
     global uid
     if 'user' in session:
+        if not commit:
+            getLastCommit()
         pr_rew_chart_data, pr_pen_chart_data, pr_chart_total, d_pr_rew_chart_data, d_pr_pen_chart_data= get_history_pr()
         pen_result = [int(i) for i in pr_chart_total[5:-1]]
         sumcheck = 0
@@ -158,6 +173,7 @@ def history_pr():
             t_p=pen_result[0],
             s_p=pen_result[1],
             f_p=pen_result[2],
+            commit=commit,
             subject=u'歷年獎懲')
     else:
         session['redirect'] = u'請先登入系統'
