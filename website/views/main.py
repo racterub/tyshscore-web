@@ -9,16 +9,16 @@ from website import app
 from lxml import etree
 import requests
 from website.views.lib.crawler import login, get_term_score, get_history_pr
+import json
 
 #Initial globs
 uid = u''
 
 
 
-
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    global uid, parent_mode
+    global uid
     if request.method == "POST":
         if request.form:
             stdid = request.form['stdid']
@@ -85,7 +85,6 @@ def scoreboard(counter):
                 body=body,
                 stdid=uid,
                 count=counter,
-                parent_mode=parent_mode,
                 subject=subject)
         else:
             if counter == 3:
