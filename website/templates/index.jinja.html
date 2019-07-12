@@ -22,12 +22,11 @@
     <br>
     <div class="ts inverted info segment">
         <p> 請注意以下幾點事項 </p>
-        <p> 1. 本網站並非桃園高中成績系統</p>
+        <p> 1. 本網站並非官方桃園高中成績系統</p>
         <p> 2. 本網站並無紀錄任何資料</p>
         <p> 3. 本網站已開源在GitHub上</p>
         <p> 4. 請勿嘗試攻擊本網站</p>
-        <p> 5. 本網站架構於免費平台，所以會導致讀取時間加長，請耐心等待</p>
-        <p> 6. 如果學校網管有任何問題，請別查水表，如有需要聯繫，請傳 email 至 <code>root [@] racterub [.] me</code></p>
+        <p> 5. 如果學校網管有任何問題，請別查水表，如有需要聯繫，請傳 email 至 <code>root[@]racterub[.]io</code></p>
     </div>
 </div>
 {% endblock %}
@@ -52,6 +51,11 @@
                 <label>密碼</label>
                 <input type="password" required="required" name="stdpwd" id="stdpwd" placeholder="請輸入你的密碼">
             </div>
+            <div class="ts checkbox">
+                <input type="checkbox" id="agreement" name="agreement" value="yes">
+                <label for="agreement">您同意使用個人帳戶透過本系統登入桃園高中校務系統</label>
+            </div>
+            <div class="ts hidden divider"></div>
             <input type="submit" value="登入" class="ts info fluid button" onclick="check()">
         </form>
     </div>

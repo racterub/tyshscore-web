@@ -52,7 +52,7 @@
     </div>
     <div class="pusher">
         <div class="large device only">
-            <div class="ts {% if parent_mode %} inverted negative {% endif %} top attached menu">
+            <div class="ts top attached menu">
                 <a href="{{ url_for('index') }}" class="{% block active_large_home %}{% endblock %} item">首頁</a>
                 {% if session['user']  %}
                     <div class="ts item dropdown" onclick="ts('.ts.dropdown:not(.basic)').dropdown();">

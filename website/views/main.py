@@ -12,7 +12,6 @@ from website.views.lib.crawler import login, get_term_score, get_history_pr
 
 #Initial globs
 uid = u''
-parent_mode=False
 
 
 
@@ -26,14 +25,10 @@ def index():
             stdpwd = request.form['stdpwd']
             status = login(stdid, stdpwd)
             if status:
-                if stdid[-1] == "p":
-                    stdid = stdid[:-1]
-                    parent_mode = True
-                    flash(u"將使用家長模式登入")
                 uid = request.form['stdid']
                 session['user'] = request.form['stdid']
                 flash(u"登入成功")
-                return render_template('index.jinja.html', stdid=uid, parent_mode=parent_mode)
+                return render_template('index.jinja.html', stdid=uid)
             else:
                 info = u"帳號密碼錯誤，請再次確認"
                 return render_template('index.jinja.html', info=info)
@@ -51,47 +46,73 @@ def index():
             session.pop('logout', None)
             return render_template('index.jinja.html', info=info)
         else:
-            return render_template('index.jinja.html', stdid=uid, parent_mode=parent_mode)
+            return render_template('index.jinja.html', stdid=uid)
 
 @app.route('/scoreboard/<int:counter>')
 def scoreboard(counter):
-    global uid, parent_mode
+    global uid
     if 'user' in session:
-        if (counter <= 0 | counter > 5): #Also Harcoded..
+        if (counter <= 0 | counter > 5):
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
             return render_template('error.jinja.html',
                 stdid=uid,
                 error_header=error_header,
-                error_context=error_context,
-                parent_mode=parent_mode), 400
-        exam_score, below_subject = get_term_score()
+                error_context=error_context), 400
+        exam_score_type, exam_score, below_subject = get_term_score()
         if exam_score == False:
             error_header = u"資料無法處理"
             error_context = u"您所選的資料目前無法處理或是校方系統資料已清空，請稍後再試"
-            return render_template('error.jinja.html', stdid=uid, parent_mode=parent_mode)
+            return render_template('error.jinja.html', stdid=uid)
         body = []
-        if counter == 4:
-            subject = u'平時成績'
-            head = [u'科目', u'成績']
-            for i in exam_score:
-                body.append(i[counter-1])
-        elif counter == 5:
-            subject = u'補考'
-            head = [u'科目', u'學期成績', u'最後成績', u'第1次補考成績']
-            body = below_subject
+        if exam_score_type == 2:
+            if counter == 4:
+                subject = u'平時成績'
+                head = [u'科目', u'成績']
+                for i in exam_score:
+                    body.append(i[3])
+            elif counter == 5:
+                subject = u'補考'
+                head = [u'科目', u'學期成績', u'最後成績', u'第1次補考成績']
+                body = below_subject
+            else:
+                subject = '第'+str(counter)+'次段考'
+                for i in exam_score:
+                    body.append(i[counter-1])
+                head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
+            return render_template('scoreboard.jinja.html',
+                head=head,
+                body=body,
+                stdid=uid,
+                count=counter,
+                parent_mode=parent_mode,
+                subject=subject)
         else:
-            subject = '第'+str(counter)+'次段考'
-            for i in exam_score:
-                body.append(i[counter-1])
-            head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
-        return render_template('scoreboard.jinja.html',
-            head=head,
-            body=body,
-            stdid=uid,
-            count=counter,
-            parent_mode=parent_mode,
-            subject=subject)
+            if counter == 3:
+                error_header = u"資料無法處理"
+                error_context = u"高三並無第三次段考"
+                return render_template('error.jinja.html', error_context=error_context, error_header=error_header)
+            else:
+                if counter == 4:
+                    subject = u'平時成績'
+                    head = [u'科目', u'成績']
+                    for i in exam_score:
+                        body.append(i[2])
+                elif counter == 5:
+                    subject = u'補考'
+                    head = [u'科目', u'學期成績', u'最後成績', u'第1次補考成績']
+                    body = below_subject
+                else:
+                    subject = '第'+str(counter)+'次段考'
+                    for i in exam_score:
+                        body.append(i[counter-1])
+                    head = [u'科目', u'成績', u'全班平均', u'班級排名', u'班級人數']
+                return render_template('scoreboard.jinja.html',
+                head=head,
+                body=body,
+                stdid=uid,
+                count=counter,
+                subject=subject)
 
     else:
         session['redirect'] = u'請先登入系統'
@@ -111,7 +132,7 @@ def robotstxt():
 
 @app.route('/history_pr/')
 def history_pr():
-    global uid, parent_mode
+    global uid
     if 'user' in session:
         pr_rew_chart_data, pr_pen_chart_data, pr_chart_total, d_pr_rew_chart_data, d_pr_pen_chart_data= get_history_pr()
         pen_result = [int(i) for i in pr_chart_total[5:-1]]
