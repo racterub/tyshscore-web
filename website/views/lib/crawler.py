@@ -53,7 +53,6 @@ def get_term_score():
         table[2] -> score
         table[3] -> subjects under 60
     '''
-    ''' THIS NEED SOME REWRITES '''
     scoredata = {'fncid': term_score, 'std_id': '', 'local_ip': '', 'contant': ''}
     main.get(url + 'f_left.asp')
     res = main.post(url + 'fnc.asp', data=scoredata)
@@ -67,51 +66,75 @@ def get_term_score():
         exam_score = []
         soup = BS(res.text, "html5lib")
         table = soup.find_all('table')
-        tr =  table[2].find_all('tr')[1:-7]
-        print(tr)
-        # for i in tr:
-        #     for k in i.find_all('font'):
-        #         tmp = k.string
-        #         print(tmp)
-        # font = table[2].find_all('font')[24:-60]
-        # text = []
-        # for i in font:
-        #     tmp = i.string
-        #     if tmp == None or tmp == ' ':
-        #         text.append('')
-        #     else:
-        #         text.append(tmp)
-        # chunkd = chunk(text, 24)
-        # for i in chunkd:
-        #     subject = i[0][2:]
-        #     score = chunk(i[4:], 4)
-        #     chunkd_score = []
-        #     for j in score:
-        #         for k in range(0,2):
-        #             if j[k]:
-        #                 j[k] = float(j[k])
-        #         j.insert(0, subject)
-        #         chunkd_score.append(j)
-        #     chunkd_score = chunkd_score[:-1]
-        #     chunkd_score[-1] = chunkd_score[-1][:-3]
-        #     exam_score.append(chunkd_score)
-        # if len(table) != 4:
-        #     below_subject = False
-        # else:
-        #     font = table[3].find_all('font')[5:]
-        #     text = []
-        #     for i in font:
-        #         tmp = i.string
-        #         if tmp == None or tmp == '':
-        #             text.append('')
-        #         else:
-        #             text.append(tmp)
-        #     below_subject = list(chunk(text, 4))
-        #     for i in below_subject:
-        #         for k in range(1, 3):
-        #             i[k] = float(i[k])
-        # return exam_score, below_subject
-        return None
+        top =  table[2].find_all('tr')[0].find_all('font')
+        check = []
+        for i in top:
+            check.append(i.string)
+        if len(check) == 20:
+            '''高三'''
+            exam_score_type = 3
+            font = table[2].find_all("font")[20:-50]
+            text = []
+            for i in font:
+                tmp = i.string
+                if tmp == None or tmp == ' ' or tmp == '\xa0':
+                    text.append('')
+                else:
+                    text.append(tmp)
+            chunkd = chunk(text, 20)
+            for i in chunkd:
+                subject = i[0][2:]
+                score = chunk(i[4:] ,4)
+                chunkd_score = []
+                for j in score:
+                    for k in range(2):
+                        if j[k]:
+                            j[k] = float(j[k])
+                    j.insert(0, subject)
+                    chunkd_score.append(j)
+                del chunkd_score[2][2:]
+                exam_score.append(chunkd_score)
+        else:
+            '''高二'''
+            exam_score_type = 2
+            font = table[2].find_all('font')[24:-60]
+            text = []
+            for i in font:
+                tmp = i.string
+                if tmp == None or tmp == ' ':
+                    text.append('')
+                else:
+                    text.append(tmp)
+            chunkd = chunk(text, 24)
+            for i in chunkd:
+                subject = i[0][2:]
+                score = chunk(i[4:], 4)
+                chunkd_score = []
+                for j in score:
+                    for k in range(0,2):
+                        if j[k]:
+                            j[k] = float(j[k])
+                    j.insert(0, subject)
+                    chunkd_score.append(j)
+                chunkd_score = chunkd_score[:-1]
+                chunkd_score[-1] = chunkd_score[-1][:-3]
+                exam_score.append(chunkd_score)
+        if len(table) != 4:
+            below_subject = False
+        else:
+            font = table[3].find_all('font')[5:]
+            text = []
+            for i in font:
+                tmp = i.string
+                if tmp == None or tmp == '':
+                    text.append('')
+                else:
+                    text.append(tmp)
+            below_subject = list(chunk(text, 4))
+            for i in below_subject:
+                for k in range(1, 3):
+                    i[k] = float(i[k])
+        return exam_score_type, exam_score, below_subject
 
 def get_history_pr():
     '''
